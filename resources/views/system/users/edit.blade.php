@@ -12,7 +12,7 @@
                 <i class="fas fa-chevron-right text-gray-400 text-xs mx-2"></i>
             </li>
             <li>
-                <a href="{{ route('admin.users.index') }}" class="text-gray-400 hover:text-gray-500">Users</a>
+                <a href="{{ route('users.users.index') }}" class="text-gray-400 hover:text-gray-500">Users</a>
             </li>
             <li class="flex items-center">
                 <i class="fas fa-chevron-right text-gray-400 text-xs mx-2"></i>
@@ -28,7 +28,7 @@
     </div>
 
     <div class="bg-white rounded-lg shadow overflow-hidden">
-        <form action="{{ route('admin.users.update', $user) }}" method="POST">
+        <form action="{{ route('users.users.update', $user) }}" method="POST">
             @csrf
             @method('PUT')
             
@@ -97,13 +97,6 @@
                     @error('password')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                </div>
-
-                <!-- Confirm Password -->
-                <div>
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirm Password</label>
-                    <input type="password" name="password_confirmation" id="password_confirmation" 
-                           class="mt-1 form-input w-full">
                 </div>
             </div>
 

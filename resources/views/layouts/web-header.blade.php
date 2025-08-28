@@ -33,7 +33,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
         <div class="container">
             <!-- Brand Logo -->
-            <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
+            <a class="navbar-brand d-flex align-items-center" href="{{ route('contact') }}">
                 <img src="{{ asset('images/kgsons.png') }}" 
                      alt="KGSons Company Logo" 
                      class="rounded-circle me-2" 
@@ -75,7 +75,6 @@
                                 <i class="fas fa-charging-station me-2 text-warning"></i>Electrical Wires & Cables</a></li>
                             <li><a class="dropdown-item d-flex align-items-center" href="{{ route('services.electrical-equipment') }}">
                                 <i class="fas fa-bolt me-2 text-warning"></i>Electrical Equipment & Components</a></li>
-
 
                             <li><h6 class="dropdown-header text-info fw-bold">Construction Services</h6></li>
                             <li><a class="dropdown-item d-flex align-items-center" href="{{ route('services.building-products') }}">

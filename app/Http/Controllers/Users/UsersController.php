@@ -122,7 +122,7 @@ class UsersController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
             'role' => ['required', 'string', 'in:'.implode(',', array_keys(User::roles()))],
             'status' => ['required', 'string', 'in:'.implode(',', array_keys(User::statuses()))],
-            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
+            'password' => ['nullable', Rules\Password::defaults()],
         ]);
 
         $data = [

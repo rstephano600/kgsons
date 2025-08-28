@@ -17,14 +17,10 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
-        'phone',
-        'status',
-    ];
+protected $fillable = [
+    'name', 'email', 'password', 'role', 'phone', 'status', 'photo'
+];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -81,4 +77,10 @@ public function getStatusNameAttribute(): string
 {
     return self::statuses()[$this->status] ?? $this->status;
 }
+
+
+    public function isOnline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
+    }
 }

@@ -6,31 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - KGSONS</title>
     
-    <!-- Favicon -->
-    <link rel="icon" href="{{ asset('images/kgsons.png') }}" type="image/png">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
+    <!-- Bootstrap 5.3.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('images/kgsons.png') }}" type="image/png">
+    
     <style>
         :root {
-            --primary-color: #3b82f6;
-            --primary-hover: #2563eb;
             --sidebar-width: 260px;
-            --header-height: 64px;
-        }
-        
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f8fafc;
         }
         
         .sidebar {
@@ -40,38 +26,26 @@
             left: 0;
             top: 0;
             transition: all 0.3s ease;
-            z-index: 1000;
+            z-index: 1030;
         }
         
         .main-content {
             margin-left: var(--sidebar-width);
-            min-height: calc(100vh - var(--header-height));
+            min-height: 100vh;
             transition: all 0.3s ease;
-        }
-        
-        .header {
-            height: var(--header-height);
-            position: sticky;
-            top: 0;
-            z-index: 999;
         }
         
         .nav-item.active {
             background-color: rgba(59, 130, 246, 0.1);
-            border-left: 3px solid var(--primary-color);
-            color: var(--primary-color);
+            border-left: 3px solid var(--bs-primary);
         }
         
         .nav-item.active .nav-icon {
-            color: var(--primary-color);
+            color: var(--bs-primary);
         }
         
         .nav-item:hover:not(.active) {
             background-color: rgba(59, 130, 246, 0.05);
-        }
-        
-        .dropdown:hover .dropdown-menu {
-            display: block;
         }
         
         @media (max-width: 1024px) {
@@ -95,47 +69,57 @@
                 right: 0;
                 bottom: 0;
                 background-color: rgba(0, 0, 0, 0.5);
-                z-index: 999;
+                z-index: 1029;
             }
             
             .overlay.active {
                 display: block;
             }
         }
+        
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            border: 2px solid #fff;
+        }
     </style>
     
     @stack('styles')
 </head>
-<body class="bg-gray-50">
+<body class="bg-light">
     <!-- Sidebar -->
-    <aside class="sidebar bg-white shadow-md">
+    <aside class="sidebar bg-white shadow">
         <!-- Sidebar Header -->
-        <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200">
-            <img src="{{ asset('images/kgsons.png') }}" alt="KGSons Logo" class="h-10">
-            <span class="ml-2 text-xl font-semibold text-gray-800">KGSons</span>
+        <div class="d-flex align-items-center justify-content-center border-bottom py-3 px-3">
+            <img src="{{ asset('images/kgsons.png') }}" alt="KGSons Logo" class="img-fluid" style="height: 40px;">
+            <span class="ms-2 fs-5 fw-semibold text-dark">KGSons</span>
         </div>
         
         <!-- Sidebar Content -->
-        <div class="overflow-y-auto h-[calc(100vh-var(--header-height))] py-4">
+        <div class="overflow-auto h-100 py-3">
             <!-- User Profile -->
-            <div class="px-4 py-3 flex items-center border-b border-gray-200">
-                <div class="relative">
+            <div class="px-3 py-3 d-flex align-items-center border-bottom">
+                <div class="position-relative">
                     <img src="{{ Auth::user()->photo ?? asset('images/default-avatar.png') }}" 
                          alt="User" 
-                         class="w-10 h-10 rounded-full object-cover">
-                    <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full 
-                                @if(Auth::user()->status === 'active') bg-green-500 @else bg-red-500 @endif
-                                border-2 border-white"></span>
+                         class="rounded-circle object-fit-cover" style="width: 40px; height: 40px;">
+                    <span class="status-indicator 
+                                @if(Auth::user()->status === 'active') bg-success @else bg-danger @endif">
+                    </span>
                 </div>
-                <div class="ml-3">
-                    <p class="text-sm font-medium text-gray-800">{{ Auth::user()->name }}</p>
-                    <p class="text-xs text-gray-500 capitalize">{{ Auth::user()->role }}</p>
+                <div class="ms-3">
+                    <p class="mb-0 fw-medium text-dark">{{ Auth::user()->name }}</p>
+                    <p class="mb-0 small text-muted text-capitalize">{{ Auth::user()->role }}</p>
                 </div>
             </div>
             
             <!-- Navigation Menu -->
-            <nav class="mt-4">
-                <ul>
+            <nav class="mt-3">
+                <ul class="list-unstyled">
                     @includeWhen(Auth::user()->role === 'admin', 'layouts.nav-items.admin')
                     @includeWhen(Auth::user()->role === 'director', 'layouts.nav-items.director')
                     @includeWhen(Auth::user()->role === 'assistantdirector', 'layouts.nav-items.assistant-director')
@@ -146,9 +130,9 @@
                     
                     <!-- Common Items for All Roles -->
                     <li class="px-2">
-                        <a href="{{ route('profile.edit') }}" 
-                           class="nav-item flex items-center px-4 py-3 text-sm text-gray-600 rounded-lg hover:text-gray-800">
-                            <i class="nav-icon fas fa-user mr-3"></i>
+                        <a href="{{ route('profile.show') }}" 
+                           class="nav-item d-flex align-items-center px-3 py-2 text-decoration-none text-muted rounded">
+                            <i class="nav-icon fa-solid fa-user me-3"></i>
                             <span>My Profile</span>
                         </a>
                     </li>
@@ -156,8 +140,8 @@
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" 
-                                    class="w-full flex items-center px-4 py-3 text-sm text-gray-600 rounded-lg hover:text-gray-800">
-                                <i class="fas fa-sign-out-alt mr-3"></i>
+                                    class="nav-item w-100 d-flex align-items-center px-3 py-2 text-decoration-none text-muted rounded border-0 bg-transparent">
+                                <i class="fa-solid fa-right-from-bracket me-3"></i>
                                 <span>Logout</span>
                             </button>
                         </form>
@@ -171,79 +155,90 @@
     <div class="overlay" onclick="toggleSidebar()"></div>
     
     <!-- Main Content -->
-    <div class="main-content">
+    <div class="main-content d-flex flex-column">
         <!-- Header -->
-        <header class="header bg-white shadow-sm border-b border-gray-200">
-            <div class="flex items-center justify-between h-full px-6">
-                <!-- Left Side -->
-                <div class="flex items-center">
-                    <button onclick="toggleSidebar()" 
-                            class="lg:hidden text-gray-600 hover:text-gray-900 mr-4">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                    
-                    <!-- Breadcrumbs -->
-                    <div class="hidden md:flex items-center text-sm">
-                        @yield('breadcrumbs')
-                    </div>
-                </div>
-                
-                <!-- Right Side -->
-                <div class="flex items-center space-x-4">
-                    <!-- Notifications -->
-                    <div class="relative dropdown">
-                        <button class="p-2 text-gray-600 hover:text-gray-900 relative">
-                            <i class="fas fa-bell text-xl"></i>
-                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+        <header class="bg-white shadow-sm border-bottom sticky-top py-2" style="z-index: 1020;">
+            <div class="container-fluid">
+                <div class="d-flex align-items-center justify-content-between">
+                    <!-- Left Side -->
+                    <div class="d-flex align-items-center">
+                        <button onclick="toggleSidebar()" 
+                                class="btn btn-sm d-lg-none text-muted me-2">
+                            <i class="fas fa-bars fs-5"></i>
                         </button>
-                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg py-1 z-50">
-                            <div class="px-4 py-2 border-b border-gray-200">
-                                <p class="text-sm font-medium">Notifications</p>
-                            </div>
-                            <div class="max-h-60 overflow-y-auto">
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0">
-                                            <i class="fas fa-info-circle text-blue-500 mr-2"></i>
-                                        </div>
-                                        <div>
-                                            <p>System update available</p>
-                                            <p class="text-xs text-gray-500">10 minutes ago</p>
-                                        </div>
-                                    </div>
-                                </a>
-                                <!-- More notifications -->
-                            </div>
-                            <div class="px-4 py-2 border-t border-gray-200 text-center">
-                                <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View all</a>
-                            </div>
+                        
+                        <!-- Breadcrumbs -->
+                        <div class="d-none d-md-flex align-items-center small">
+                            @yield('breadcrumbs')
                         </div>
                     </div>
                     
-                    <!-- User Dropdown -->
-                    <div class="relative dropdown">
-                        <button class="flex items-center space-x-2 focus:outline-none">
-                            <img src="{{ Auth::user()->photo ?? asset('images/default-avatar.png') }}" 
-                                 alt="User" 
-                                 class="w-8 h-8 rounded-full object-cover">
-                            <span class="hidden md:inline text-sm font-medium">{{ Auth::user()->name }}</span>
-                            <i class="fas fa-chevron-down text-xs hidden md:inline"></i>
-                        </button>
-                        <div class="dropdown-menu hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                            <a href="{{ route('profile.edit') }}" 
-                               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-user mr-2"></i> Profile
-                            </a>
-                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="fas fa-cog mr-2"></i> Settings
-                            </a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit" 
-                                        class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    <i class="fas fa-sign-out-alt mr-2"></i> Logout
-                                </button>
-                            </form>
+                    <!-- Right Side -->
+                    <div class="d-flex align-items-center">
+                        <!-- Notifications -->
+                        <div class="dropdown me-3">
+                            <button class="btn btn-sm position-relative text-muted" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-bell fs-5"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle">
+                                    <span class="visually-hidden">Notifications</span>
+                                </span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end shadow" style="width: 288px;">
+                                <div class="px-3 py-2 border-bottom">
+                                    <p class="mb-0 small fw-medium">Notifications</p>
+                                </div>
+                                <div class="overflow-auto" style="max-height: 240px;">
+                                    <a href="#" class="dropdown-item d-block">
+                                        <div class="d-flex align-items-start">
+                                            <div class="flex-shrink-0">
+                                                <i class="fas fa-info-circle text-primary me-2"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-0 small">System update available</p>
+                                                <p class="mb-0 small text-muted">10 minutes ago</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <!-- More notifications -->
+                                </div>
+                                <div class="px-3 py-2 border-top text-center">
+                                    <a href="#" class="small text-primary text-decoration-none">View all</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- User Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn d-flex align-items-center text-muted p-0" type="button" data-bs-toggle="dropdown">
+                                <img src="{{ Auth::user()->photo ?? asset('images/default-avatar.png') }}" 
+                                     alt="User" 
+                                     class="rounded-circle object-fit-cover" style="width: 32px; height: 32px;">
+                                <span class="d-none d-md-inline ms-2 small fw-medium">{{ Auth::user()->name }}</span>
+                                <i class="fas fa-chevron-down small d-none d-md-inline ms-1"></i>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li>
+                                    <a href="{{ route('profile.edit') }}" 
+                                       class="dropdown-item d-flex align-items-center">
+                                        <i class="fas fa-user me-2"></i> Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#" class="dropdown-item d-flex align-items-center">
+                                        <i class="fas fa-cog me-2"></i> Settings
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}">
+                                        @csrf
+                                        <button type="submit" 
+                                                class="dropdown-item d-flex align-items-center">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -251,58 +246,36 @@
         </header>
         
         <!-- Page Content -->
-        <main class="p-6">
+        <main class="container-fluid py-3 flex-grow-1">
             @yield('content')
         </main>
         
         <!-- Footer -->
-        <footer class="bg-white border-t border-gray-200 py-4 px-6">
-            <div class="flex flex-col md:flex-row items-center justify-between">
-                <div class="text-sm text-gray-600 mb-2 md:mb-0">
-                    &copy; {{ date('Y') }} KGSons. All rights reserved.
-                </div>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
-                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Terms of Service</a>
-                    <a href="#" class="text-sm text-gray-600 hover:text-gray-900">Contact Us</a>
+        <footer class="bg-white border-top py-3 mt-auto">
+            <div class="container-fluid">
+                <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                    <div class="small text-muted mb-2 mb-md-0">
+                        &copy; {{ date('Y') }} KGSons. All rights reserved.
+                    </div>
+                    <div class="d-flex">
+                        <a href="#" class="small text-muted text-decoration-none me-3">Privacy Policy</a>
+                        <a href="#" class="small text-muted text-decoration-none me-3">Terms of Service</a>
+                        <a href="#" class="small text-muted text-decoration-none">Contact Us</a>
+                    </div>
                 </div>
             </div>
         </footer>
     </div>
     
-    <!-- Scripts -->
+    <!-- Bootstrap 5.3.3 JS with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
         function toggleSidebar() {
             document.querySelector('.sidebar').classList.toggle('active');
             document.querySelector('.overlay').classList.toggle('active');
+            document.body.classList.toggle('overflow-hidden');
         }
-        
-        // Close dropdowns when clicking outside
-        document.addEventListener('click', function(event) {
-            if (!event.target.matches('.dropdown *')) {
-                const dropdowns = document.querySelectorAll('.dropdown-menu');
-                dropdowns.forEach(dropdown => {
-                    dropdown.style.display = 'none';
-                });
-            }
-        });
-        
-        // Initialize dropdowns
-        document.querySelectorAll('.dropdown').forEach(dropdown => {
-            dropdown.addEventListener('click', function(e) {
-                const menu = this.querySelector('.dropdown-menu');
-                if (menu.style.display === 'block') {
-                    menu.style.display = 'none';
-                } else {
-                    // Close all other dropdowns first
-                    document.querySelectorAll('.dropdown-menu').forEach(m => {
-                        m.style.display = 'none';
-                    });
-                    menu.style.display = 'block';
-                }
-                e.stopPropagation();
-            });
-        });
     </script>
     
     @stack('scripts')

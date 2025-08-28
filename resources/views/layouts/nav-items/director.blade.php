@@ -6,14 +6,14 @@
     </a>
 </li>
 <li class="px-2">
-    <a href="{{ route('director.financials') }}" 
+    <a href="#" 
        class="nav-item flex items-center px-4 py-3 text-sm text-gray-600 rounded-lg hover:text-gray-800 @if(Route::is('director.financials')) active @endif">
         <i class="nav-icon fas fa-money-bill-wave mr-3"></i>
         <span>Financial Reports</span>
     </a>
 </li>
 <li class="px-2">
-    <a href="{{ route('director.projects') }}" 
+    <a href="#" 
        class="nav-item flex items-center px-4 py-3 text-sm text-gray-600 rounded-lg hover:text-gray-800 @if(Route::is('director.projects')) active @endif">
         <i class="nav-icon fas fa-project-diagram mr-3"></i>
         <span>Projects</span>

@@ -30,42 +30,22 @@ Route::prefix('services')->group(function () {
 
 
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Auth\NewPasswordController;
 
+use App\Http\Controllers\Auth\LoginController;
 
-// Authentication Routes
-Route::middleware('guest')->group(function () {
-    // Login Routes
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-                ->name('login');
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
-    
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware('auth');
+
+    use App\Http\Controllers\Auth\RegisteredUserController;
     // Registration Routes
     Route::get('register', [RegisteredUserController::class, 'create'])
                 ->name('register');
     Route::post('register', [RegisteredUserController::class, 'store']);
-    
-    // Password Reset Routes
-    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
-                ->name('password.request');
-    Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
-                ->name('password.email');
-    
-    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
-                ->name('password.reset');
-    Route::post('reset-password', [NewPasswordController::class, 'store'])
-                ->name('password.update');
-});
-
-// Logout Route
-Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-            ->middleware('auth')
-            ->name('logout');
-
-
 
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Director\DirectorDashboardController;
@@ -76,14 +56,20 @@ use App\Http\Controllers\Staff\StaffDashboardController;
 use App\Http\Controllers\Customer\CustomerDashboardController;
 
 
-
-// Common Authenticated Routes
-Route::middleware('auth')->group(function () {
-    // Profile Routes (accessible to all roles)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/director/dashboard', fn() => view('system.director.director'))->name('director.dashboard');
+    Route::get('/assistantdirector/dashboard', fn() => view('system.assistantdirector.assistantdirector'))->name('assistantdirector.dashboard');
+    Route::get('/manager/dashboard', fn() => view('system.manager.manager'))->name('manager.dashboard');
+    Route::get('/secretary/dashboard', fn() => view('system.secretary.secretary'))->name('secretary.dashboard');
+    Route::get('/staff/dashboard', fn() => view('system.staff.staff'))->name('staff.dashboard');
+    Route::get('/customer/dashboard', fn() => view('system.customer.customer'))->name('customer.dashboard');
+    Route::get('/user/dashboard', fn() => view('system.user.user'))->name('user.dashboard');
 });
+
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/dashboard', fn() => view('system.admin.dashboard'))->name('admin.dashboard');
+});
+
 
 // Admin Routes
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->group(function () {
@@ -94,90 +80,53 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     
     // Additional admin routes can be added here
 });
+use App\Http\Controllers\users\UserLoginController;
+use App\Http\Controllers\company\InvoiceController;
 
-// Director Routes
-Route::prefix('director')->name('director.')->middleware(['auth', 'role:director'])->group(function () {
-    Route::get('/dashboard', [DirectorDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/financials', [DirectorDashboardController::class, 'financials'])->name('financials');
-    Route::get('/projects', [DirectorDashboardController::class, 'projects'])->name('projects');
-    
-    // Additional director routes can be added here
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/user-logins', [UserLoginController::class, 'index'])->name('user-logins.index');
+});
+Route::middleware('auth')->group(function () {
+    Route::get('/invoices/create', [InvoiceController::class, 'create'])->name('invoices.create');
+    Route::post('/invoices', [InvoiceController::class, 'store'])->name('invoices.store');
+    Route::get('/invoices/{invoice}', [InvoiceController::class, 'show'])->name('invoices.show');
+    Route::get('/invoices/{invoice}/print', [InvoiceController::class, 'print'])->name('invoices.print');
 });
 
-// Assistant Director Routes
-Route::prefix('assistant-director')->name('assistant-director.')->middleware(['auth', 'role:assistantdirector'])->group(function () {
-    Route::get('/dashboard', [AssistantDirectorDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/operations', [AssistantDirectorDashboardController::class, 'operations'])->name('operations');
-    Route::get('/team', [AssistantDirectorDashboardController::class, 'team'])->name('team');
-    
-    // Additional assistant director routes can be added here
-});
-
-// Manager Routes
-Route::prefix('manager')->name('manager.')->middleware(['auth', 'role:manager'])->group(function () {
-    Route::get('/dashboard', [ManagerDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/tasks', [ManagerDashboardController::class, 'tasks'])->name('tasks');
-    Route::get('/performance', [ManagerDashboardController::class, 'performance'])->name('performance');
-    
-    // Additional manager routes can be added here
-});
-
-// Secretary Routes
-Route::prefix('secretary')->name('secretary.')->middleware(['auth', 'role:secretary'])->group(function () {
-    Route::get('/dashboard', [SecretaryDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/appointments', [SecretaryDashboardController::class, 'appointments'])->name('appointments');
-    Route::get('/documents', [SecretaryDashboardController::class, 'documents'])->name('documents');
-    
-    // Additional secretary routes can be added here
-});
-
-// Staff Routes
-Route::prefix('staff')->name('staff.')->middleware(['auth', 'role:staff'])->group(function () {
-    Route::get('/dashboard', [StaffDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/tasks', [StaffDashboardController::class, 'tasks'])->name('tasks');
-    Route::get('/attendance', [StaffDashboardController::class, 'attendance'])->name('attendance');
-    
-    // Additional staff routes can be added here
-});
-
-// Customer Routes
-Route::prefix('customer')->name('customer.')->middleware(['auth', 'role:customer'])->group(function () {
-    Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/orders', [CustomerDashboardController::class, 'orders'])->name('orders');
-    Route::get('/support', [CustomerDashboardController::class, 'support'])->name('support');
-    
-    // Additional customer routes can be added here
-});
-
-// Home Route (redirects to appropriate dashboard based on role)
-Route::get('/home', function () {
-    $user = auth()->user();
-    
-    return match($user->role) {
-        'admin' => redirect()->route('admin.dashboard'),
-        'director' => redirect()->route('director.dashboard'),
-        'assistantdirector' => redirect()->route('assistant-director.dashboard'),
-        'manager' => redirect()->route('manager.dashboard'),
-        'secretary' => redirect()->route('secretary.dashboard'),
-        'staff' => redirect()->route('staff.dashboard'),
-        'customer' => redirect()->route('customer.dashboard'),
-        default => redirect('/'),
-    };
-})->middleware('auth')->name('home');
-
-// Default route redirects to login
-Route::get('/', function () {
-    return auth()->check() ? redirect()->route('home') : redirect()->route('login');
-});
 
 use App\Http\Controllers\users\UsersController;
 // Admin Routes
 Route::prefix('System-users')->name('users.')->middleware(['auth', 'role:admin,director,secretary'])->group(function () {
     Route::get('/', [UsersController::class, 'index'])->name('users.index');
     Route::get('/create', [UsersController::class, 'create'])->name('users.create');
-    Route::get('/edit', [UsersController::class, 'edit'])->name('users.edit');
     Route::post('/store', [UsersController::class, 'store'])->name('users.store');
-    Route::get('/show', [UsersController::class, 'show'])->name('users.show');
-    Route::get('/destroy', [UsersController::class, 'destroy'])->name('users.destroy');
+    Route::get('/users/{user}', [UsersController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit', [UsersController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [UsersController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [UsersController::class, 'destroy'])->name('users.destroy');
 
+    
+
+});
+
+
+// Profile Routes
+use App\Http\Controllers\user\ProfileController;
+Route::prefix('profile')->middleware('auth')->group(function () {
+    Route::get('/', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/update', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+
+use App\Http\Controllers\FoodController;
+use App\Http\Controllers\FoodSaleController;
+
+Route::resource('foods', FoodController::class);
+Route::resource('food_sales', \App\Http\Controllers\FoodSaleController::class);
+Route::post('food_sales/{foodSale}/mark-paid', [FoodSaleController::class, 'markPaid'])->name('food_sales.markPaid');
+use App\Http\Controllers\ServiceController;
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('services', ServiceController::class);
 });
