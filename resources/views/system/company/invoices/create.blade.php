@@ -3,112 +3,112 @@
 @section('title', 'Create Invoice')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <div class="bg-white rounded-lg shadow p-6">
-        <h2 class="text-2xl font-semibold mb-6">Create New Invoice</h2>
+<div class="container-fluid">
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <h2 class="h3 fw-semibold text-dark mb-4">Create New Invoice</h2>
 
-        <form id="invoice-form" method="POST" action="{{ route('invoices.store') }}">
-            @csrf
+            <form id="invoice-form" method="POST" action="{{ route('invoices.store') }}">
+                @csrf
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <!-- Client Information -->
-                <div>
-                    <label for="client_id" class="block text-sm font-medium text-gray-700 mb-1">Client *</label>
-                    <input type="text" name="client" id="client" class="form-input w-full" required>
-                </div>
-
-                <!-- Invoice Dates -->
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label for="invoice_date" class="block text-sm font-medium text-gray-700 mb-1">Invoice Date *</label>
-                        <input type="date" name="invoice_date" id="invoice_date" 
-                               class="form-input w-full" required
-                               value="{{ old('invoice_date', date('Y-m-d')) }}">
+                <div class="row mb-4">
+                    <!-- Client Information -->
+                    <div class="col-md-6 mb-3">
+                        <label for="client_id" class="form-label">Client <span class="text-danger">*</span></label>
+                        <input type="text" name="client" id="client" class="form-control" required>
                     </div>
-                    <div>
-                        <label for="due_date" class="block text-sm font-medium text-gray-700 mb-1">Due Date *</label>
-                        <input type="date" name="due_date" id="due_date" 
-                               class="form-input w-full" required
-                               value="{{ old('due_date', date('Y-m-d', strtotime('+30 days'))) }}"
-                    </div>
-                </div>
-            </div>
 
-            <!-- Invoice Items -->
-            <div class="mb-6">
-                <h3 class="text-lg font-medium text-gray-800 mb-3">Invoice Items</h3>
-                <div id="items-container">
-                    <div class="item-row grid grid-cols-12 gap-3 mb-3">
-                        <div class="col-span-5">
-<div class="row">
-    <div class="col-md-6">
-        <input type="text" name="items[0][product]" class="form-control" placeholder="Enter product name" required>
-    </div>
-    <div class="col-md-3">
-        <input type="number" step="0.01" name="items[0][unit_price]" class="form-control" placeholder="Enter price" required>
-    </div>
-</div>
-
-                        </div>
-                        <div class="col-span-2">
-                            <input type="number" name="items[0][quantity]" 
-                                   class="form-input quantity" 
-                                   placeholder="Qty" min="1" value="1" required>
-                        </div>
-                        <div class="col-span-3">
-                            <input type="number" step="0.01" name="items[0][unit_price]" 
-                                   class="form-input unit-price" 
-                                   placeholder="Unit Price" required>
-                        </div>
-                        <div class="col-span-2 flex items-center">
-                            <span class="item-total">0.00</span>
-                            <button type="button" class="ml-2 text-red-500 remove-item hidden">
-                                <i class="fas fa-times"></i>
-                            </button>
+                    <!-- Invoice Dates -->
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="invoice_date" class="form-label">Invoice Date <span class="text-danger">*</span></label>
+                                <input type="date" name="invoice_date" id="invoice_date" 
+                                       class="form-control" required
+                                       value="{{ old('invoice_date', date('Y-m-d')) }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="due_date" class="form-label">Due Date <span class="text-danger">*</span></label>
+                                <input type="date" name="due_date" id="due_date" 
+                                       class="form-control" required
+                                       value="{{ old('due_date', date('Y-m-d', strtotime('+30 days'))) }}">
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <button type="button" id="add-item" class="btn-secondary mt-2">
-                    <i class="fas fa-plus mr-2"></i> Add Item
-                </button>
-            </div>
+                <!-- Invoice Items -->
+                <div class="mb-4">
+                    <h3 class="h5 fw-medium text-dark mb-3">Invoice Items</h3>
+                    <div id="items-container">
+                        <div class="item-row row g-2 align-items-center mb-2">
+                            <div class="col-md-5">
+                                <input type="text" name="items[0][product]" 
+                                       class="form-control" 
+                                       placeholder="Product description" required>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="number" name="items[0][quantity]" 
+                                       class="form-control quantity" 
+                                       placeholder="Qty" min="1" value="1" required>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="number" step="0.01" name="items[0][unit_price]" 
+                                       class="form-control unit-price" 
+                                       placeholder="Unit Price" required>
+                            </div>
+                            <div class="col-md-2 d-flex align-items-center">
+                                <span class="item-total fw-medium">0.00</span>
+                                <button type="button" class="btn btn-sm btn-link text-danger remove-item d-none ms-2">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-            <!-- Totals -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="md:col-span-2"></div>
-                <div class="bg-gray-50 p-4 rounded-lg">
-                    <div class="flex justify-between mb-2">
-                        <span class="font-medium">Subtotal:</span>
-                        <span id="subtotal">0.00</span>
-                    </div>
-                    <div class="flex justify-between mb-2">
-                        <span class="font-medium">Tax (15%):</span>
-                        <span id="tax">0.00</span>
-                    </div>
-                    <div class="flex justify-between text-lg font-bold">
-                        <span>Total:</span>
-                        <span id="total">0.00</span>
+                    <button type="button" id="add-item" class="btn btn-outline-secondary mt-2">
+                        <i class="fas fa-plus me-2"></i> Add Item
+                    </button>
+                </div>
+
+                <!-- Totals -->
+                <div class="row mb-4">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div class="bg-light p-3 rounded">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="fw-medium">Subtotal:</span>
+                                <span id="subtotal">0.00</span>
+                            </div>
+                            <div class="d-flex justify-between mb-2">
+                                <span class="fw-medium">Tax (15%):</span>
+                                <span id="tax">0.00</span>
+                            </div>
+                            <div class="d-flex justify-between fw-bold fs-5">
+                                <span>Total:</span>
+                                <span id="total">0.00</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Notes -->
-            <div class="mb-6">
-                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-                <textarea name="notes" id="notes" rows="3" class="form-textarea w-full">{{ old('notes') }}</textarea>
-            </div>
+                <!-- Notes -->
+                <div class="mb-4">
+                    <label for="notes" class="form-label">Notes</label>
+                    <textarea name="notes" id="notes" rows="3" class="form-control">{{ old('notes') }}</textarea>
+                </div>
 
-            <!-- Form Actions -->
-            <div class="flex justify-end space-x-3">
-                <button type="reset" class="btn-secondary">
-                    <i class="fas fa-undo mr-2"></i> Reset
-                </button>
-                <button type="submit" class="btn-primary">
-                    <i class="fas fa-save mr-2"></i> Create Invoice
-                </button>
-            </div>
-        </form>
+                <!-- Form Actions -->
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="reset" class="btn btn-outline-secondary">
+                        <i class="fas fa-undo me-2"></i> Reset
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i> Create Invoice
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 @endsection
@@ -119,9 +119,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add new item row
     let itemCount = 1;
     document.getElementById('add-item').addEventListener('click', function() {
-        const newRow = document.querySelector('.item-row').cloneNode(true);
+        const template = document.querySelector('.item-row');
+        const newRow = template.cloneNode(true);
+        
+        // Update the name attributes
         newRow.innerHTML = newRow.innerHTML.replace(/items\[0\]/g, `items[${itemCount}]`);
-        newRow.querySelector('.remove-item').classList.remove('hidden');
+        
+        // Show remove button and clear values
+        newRow.querySelector('.remove-item').classList.remove('d-none');
+        newRow.querySelector('input[name^="items"]').value = '';
+        newRow.querySelector('.quantity').value = '1';
+        newRow.querySelector('.unit-price').value = '';
+        newRow.querySelector('.item-total').textContent = '0.00';
+        
         document.getElementById('items-container').appendChild(newRow);
         itemCount++;
     });
@@ -139,24 +149,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Calculate totals when values change
     document.addEventListener('input', function(e) {
-        if (e.target.classList.contains('quantity') || 
-            e.target.classList.contains('unit-price') ||
-            e.target.classList.contains('product-select')) {
+        if (e.target.classList.contains('quantity') || e.target.classList.contains('unit-price')) {
             calculateItemTotal(e.target.closest('.item-row'));
             calculateTotals();
-        }
-    });
-
-    // Set unit price when product selected
-    document.addEventListener('change', function(e) {
-        if (e.target.classList.contains('product-select')) {
-            const selectedOption = e.target.options[e.target.selectedIndex];
-            const unitPrice = selectedOption.getAttribute('data-price');
-            if (unitPrice) {
-                e.target.closest('.item-row').querySelector('.unit-price').value = unitPrice;
-                calculateItemTotal(e.target.closest('.item-row'));
-                calculateTotals();
-            }
         }
     });
 
@@ -182,6 +177,9 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('tax').textContent = tax.toFixed(2);
         document.getElementById('total').textContent = total.toFixed(2);
     }
+
+    // Initial calculation
+    calculateTotals();
 });
 </script>
 @endpush

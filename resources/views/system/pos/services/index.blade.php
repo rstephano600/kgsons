@@ -5,10 +5,10 @@
     <h2 class="mb-4">Services</h2>
 
     <div class="mb-3">
-        <a href="{{ route('services.create') }}" class="btn btn-primary">+ Add Service</a>
+        <a href="{{ route('customer_services.create') }}" class="btn btn-primary">+ Add Service</a>
     </div>
 
-    <form method="GET" action="{{ route('services.index') }}" class="mb-3">
+    <form method="GET" action="{{ route('customer_services.index') }}" class="mb-3">
         <input type="text" name="search" class="form-control" placeholder="Search by service name or user..." value="{{ request('search') }}">
     </form>
 
@@ -32,9 +32,9 @@
                     <td>{{ $service->creator->name ?? 'N/A' }}</td>
                     <td>{{ $service->updater->name ?? 'N/A' }}</td>
                     <td>
-                        <a href="{{ route('services.show', $service->id) }}" class="btn btn-sm btn-info">View</a>
-                        <a href="{{ route('services.edit', $service->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                        <form action="{{ route('services.destroy', $service->id) }}" method="POST" class="d-inline">
+                        <a href="{{ route('customer_services.show', $service->id) }}" class="btn btn-sm btn-info">View</a>
+                        <a href="{{ route('customer_services.edit', $service->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                        <form action="{{ route('customer_services.destroy', $service->id) }}" method="POST" class="d-inline">
                             @csrf @method('DELETE')
                             <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this service?')">Delete</button>
                         </form>
@@ -46,6 +46,6 @@
         </tbody>
     </table>
 
-    {{ $services->links() }}
+    {{ $services->links('pagination::bootstrap-5') }}
 </div>
 @endsection

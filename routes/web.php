@@ -125,8 +125,69 @@ use App\Http\Controllers\FoodSaleController;
 Route::resource('foods', FoodController::class);
 Route::resource('food_sales', \App\Http\Controllers\FoodSaleController::class);
 Route::post('food_sales/{foodSale}/mark-paid', [FoodSaleController::class, 'markPaid'])->name('food_sales.markPaid');
+
+
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\DrinkController;
+use App\Http\Controllers\DrinkSaleController;
 
 Route::middleware(['auth'])->group(function () {
-    Route::resource('services', ServiceController::class);
+    Route::resource('customer_services', ServiceController::class);
+    Route::resource('drinks', DrinkController::class);
+    Route::resource('drink_sales', DrinkSaleController::class);
+    Route::post('drink_sales/{drinkSale}/mark-paid', [DrinkSaleController::class, 'markPaid'])->name('drink_sales.markPaid');
 });
+
+
+use App\Http\Controllers\SalesDashboardController;
+// Dashboard routes
+Route::get('/Sales/dashboard', [SalesDashboardController::class, 'index'])->name('sales_dashboard.index');
+Route::get('/Sales/dashboard/export', [SalesDashboardController::class, 'exportReport'])->name('sales_dashboard.export');
+
+use App\Http\Controllers\FoodSaleReportController;
+
+Route::get('/reports/food-sales', [FoodSaleReportController::class, 'index'])->name('reports.food_sales');
+Route::get('/reports/food-sales/export', [FoodSaleReportController::class, 'export'])->name('reports.food_sales.export');
+
+use App\Http\Controllers\DrinkSaleReportController;
+
+Route::get('/reports/drink-sales', [DrinkSaleReportController::class, 'index'])->name('reports.drink_sales');
+Route::get('/reports/drink-sales/export', [DrinkSaleReportController::class, 'export'])->name('reports.drink_sales.export');
+
+use App\Http\Controllers\pos\ReportController;
+
+Route::get('/summary/reports/sales', [ReportController::class, 'index'])->name('sales.reports.index');
+// routes/web.php
+Route::get('/reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
+Route::post('/reports/sales/print', [ReportController::class, 'printSalesReport'])->name('reports.sales.print');
+
+use App\Http\Controllers\pos\ExpenseCategoryController;
+use App\Http\Controllers\pos\ExpenseController;
+Route::resource('expense_categories', ExpenseCategoryController::class);
+Route::resource('expenses', ExpenseController::class);
+
+
+use App\Http\Controllers\pos\ReportsController;
+
+// Add these routes to your existing web.php file
+
+Route::middleware(['auth'])->group(function () {
+    
+    // Reports Routes
+    Route::prefix('reports')->name('general.reports.')->group(function () {
+        Route::get('/pos/Reportpage', [ReportsController::class, 'index'])->name('index');
+        Route::get('/Pos/export/pdf', [ReportsController::class, 'exportPdf'])->name('export.pdf');
+        Route::get('/pos/export/excel', [ReportsController::class, 'exportExcel'])->name('export.excel');
+        Route::get('/pos/export/csv', [ReportsController::class, 'exportCsv'])->name('export.csv');
+    });
+    
+});
+
+use App\Http\Controllers\pos\SalesReportController;
+
+// Sales Reports
+Route::get('/general/sales-report', [SalesReportController::class, 'index'])->name('general.sales.report');
+Route::get('/general/sales-report/export', [SalesReportController::class, 'export'])->name('general.sales.export');
+
+use App\Http\Controllers\SystemLogController;
+Route::get('/System-logs', [SystemLogController::class, 'index'])->name('system.logs.index');

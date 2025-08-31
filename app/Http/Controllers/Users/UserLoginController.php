@@ -38,7 +38,7 @@ class UserLoginController extends Controller
         }
 
         $roles = DB::table('users')->distinct()->pluck('role');
-        $logins = $query->paginate(10);
+        $logins = $query->paginate(100);
 
         return view('system.user_logins.index', compact('logins', 'roles'));
     }

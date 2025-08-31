@@ -6,13 +6,19 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - KGSONS</title>
     
-    <!-- Bootstrap 5.3.3 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+<!-- Bootstrap CSS -->
+<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link href="{{ asset('assets/css/all.min.css') }}" rel="stylesheet">
+
+<!-- Select2 CSS -->
+<link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet">
+
+<!-- Your custom CSS if needed -->
+<link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('images/kgsons.png') }}" type="image/png">
+<link rel="icon" href="{{ asset('images/kgsons.png') }}" type="image/png">
     
     <style>
         :root {
@@ -46,6 +52,22 @@
         
         .nav-item:hover:not(.active) {
             background-color: rgba(59, 130, 246, 0.05);
+        }
+.section-header {
+
+    padding: 14px 22px;
+    margin: 0 -15px 20px -15px;
+    font-weight: 600;
+    /* font-size: 15px; */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 6px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.15); /* subtle shadow */
+}
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e5e7eb, transparent);
+            margin: 15px 0;
         }
         
         @media (max-width: 1024px) {
@@ -90,6 +112,7 @@
     
     @stack('styles')
 </head>
+
 <body class="bg-light">
     <!-- Sidebar -->
     <aside class="sidebar bg-white shadow">
@@ -128,6 +151,8 @@
                     @includeWhen(Auth::user()->role === 'staff', 'layouts.nav-items.staff')
                     @includeWhen(Auth::user()->role === 'customer', 'layouts.nav-items.customer')
                     
+
+                    
                     <!-- Common Items for All Roles -->
                     <li class="px-2">
                         <a href="{{ route('profile.show') }}" 
@@ -146,6 +171,7 @@
                             </button>
                         </form>
                     </li>
+                    <div class="divider"></div><div class="divider"></div><div class="divider"></div><div class="divider"></div>
                 </ul>
             </nav>
         </div>
@@ -267,8 +293,12 @@
         </footer>
     </div>
     
-    <!-- Bootstrap 5.3.3 JS with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="{{ asset('assets/js/bootstrap.bundle.min.js') }}"></script>
+
+<!-- Select2 JS -->
+<script src="{{ asset('assets/js/select2.min.js') }}"></script>
+
     
     <script>
         function toggleSidebar() {

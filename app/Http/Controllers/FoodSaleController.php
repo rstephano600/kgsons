@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Food;
 use App\Models\FoodSale;
 use App\Models\Service;
+use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
 
 class FoodSaleController extends Controller
@@ -23,7 +24,7 @@ public function index(Request $request)
             $q->whereDate('created_at', $request->input('date'));
         })
         ->latest()
-        ->paginate(10)
+        ->paginate(100)
         ->withQueryString();
 
     return view('system.pos.food_sales.index', compact('foodSales'));
@@ -37,32 +38,40 @@ public function index(Request $request)
         return view('system.pos.food_sales.create', compact('foods','services'));
     }
 
-    public function store(Request $request)
-    {
-        $request->validate([
-            'food_id'  => 'required|exists:foods,id',
-            'quantity' => 'required|integer|min:1',
-            'service_id' => 'required|exists:users,id',
-        ]);
+public function store(Request $request)
+{
+    $request->validate([
+        'food_id'  => 'required|exists:foods,id',
+        'quantity' => 'required|integer|min:1',
+        'service_id' => 'required|exists:customer_services,id',
+    ]);
 
-        $food = Food::findOrFail($request->food_id);
-        $price = $food->price;
-        $quantity = $request->quantity;
-        $total = $price * $quantity;
+    $food = Food::findOrFail($request->food_id);
+    $price = $food->price;
+    $quantity = $request->quantity;
+    $total = $price * $quantity;
 
-        FoodSale::create([
-            'food_id'  => $food->id,
-            'quantity' => $quantity,
-            'price'    => $price,
-            'total'    => $total,
-            'created_by'    => auth()->id(),
-            'payment_method'=> $request->payment_method ?? null,
-            'is_paid'       => false, // default unpaid
-            'service_id' => $service_id,
-        ]);
+    $foodSale = FoodSale::create([
+        'food_id'       => $food->id,
+        'quantity'      => $quantity,
+        'price'         => $price,
+        'total'         => $total,
+        'created_by'    => auth()->id(),
+        'payment_method'=> $request->payment_method ?? null,
+        'is_paid'       => false,
+        'service_id'    => $request->service_id,
+    ]);
 
-        return redirect()->route('food_sales.index')->with('success', 'Sale recorded successfully!');
-    }
+    LogActivity::add(
+        'create',
+        'Food',
+        $foodSale->id,
+        'created a new Food: ' . $foodSale->name
+    );
+
+    return redirect()->route('food_sales.index')->with('success', 'Sale recorded successfully!');
+}
+
 
     public function show(FoodSale $foodSale)
     {
@@ -93,6 +102,13 @@ public function index(Request $request)
             'price'    => $price,
             'total'    => $total,
         ]);
+
+    LogActivity::add(
+    'Update',
+    'food sale',
+    $foodSale->id,
+    'updated food: ' . $foodSale->name
+);
 
         return redirect()->route('food_sales.index')->with('success', 'Sale updated successfully!');
     }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Service;
 use App\Models\FoodSale;
+use App\Helpers\LogActivity;
 
 class ServiceController extends Controller
 {
@@ -28,8 +29,15 @@ public function store(Request $request)
         'service_name' => 'required|string|max:255',
     ]);
 
-    Service::create($request->all());
-    return redirect()->route('services.index')->with('success', 'Service assigned successfully.');
+    $service = Service::create($request->all());
+
+    LogActivity::add(
+    'create',
+    'Customer Server',
+    $service->id,
+    'Created a customer server: ' . $service->user->name
+);
+    return redirect()->route('customer_services.index')->with('success', 'Service assigned successfully.');
 }
 
 }

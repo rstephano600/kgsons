@@ -15,6 +15,6 @@
         </div>
     </div>
 
-    <a href="{{ route('services.index') }}" class="btn btn-secondary mt-3">Back</a>
+    <a href="{{ route('customer_services.index') }}" class="btn btn-secondary mt-3">Back</a>
 </div>
 @endsection

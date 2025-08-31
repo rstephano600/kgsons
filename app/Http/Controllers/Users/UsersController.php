@@ -78,7 +78,7 @@ class UsersController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone' => $request->phone,
@@ -86,6 +86,13 @@ class UsersController extends Controller
             'status' => $request->status,
             'password' => Hash::make($request->password),
         ]);
+
+        LogActivity::add(
+    'create',
+    'User',
+    $user->id,
+    'Created a new User: ' . $user->name
+);
 
         return redirect()->route('users.users.index')
             ->with('success', 'User created successfully.');
@@ -138,6 +145,12 @@ class UsersController extends Controller
         }
 
         $user->update($data);
+            LogActivity::add(
+    'Update',
+    'User',
+    $user->id,
+    'Created a customer server: ' . $user->name
+);
 
         return redirect()->route('users.users.index')
             ->with('success', 'User updated successfully.');
@@ -149,6 +162,13 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
+            LogActivity::add(
+    'Delete',
+    'user',
+    $service->id,
+    'deleted a user: ' . $user->name
+);
 
         return redirect()->route('users.users.index')
             ->with('success', 'User deleted successfully.');

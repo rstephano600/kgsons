@@ -13,7 +13,17 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+    <!-- Bootstrap CSS -->
+<link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet">
+
+<!-- Font Awesome -->
+<link href="{{ asset('assets/css/all.min.css') }}" rel="stylesheet">
+
+<!-- Select2 CSS -->
+<link href="{{ asset('assets/css/select2.min.css') }}" rel="stylesheet">
+
+<!-- Your custom CSS if needed -->
+<link href="{{ asset('assets/css/custom.css') }}" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;

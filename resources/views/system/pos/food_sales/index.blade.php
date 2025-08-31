@@ -61,13 +61,16 @@
                         <!-- <td>{{ $sale->user->name ?? 'Cashier' }}</td> -->
                         <td>{{ $sale->created_at }}</td>
                         <td>
-                            <!-- <a href="{{ route('food_sales.edit', $sale->id) }}" class="btn btn-sm btn-warning">Edit</a> -->
+
                             <a href="{{ route('food_sales.show', $sale->id) }}" class="btn btn-sm btn-info">View</a>
-                            <!-- <form action="{{ route('food_sales.destroy', $sale->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this sale?');">
+                            @if(in_array(Auth::user()->role, ['admin','secretary']))
+                            <a href="{{ route('food_sales.edit', $sale->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="{{ route('food_sales.destroy', $sale->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Delete this sale?');">
                                 @csrf
                                 @method('DELETE')
                                 <button class="btn btn-sm btn-danger">Delete</button>
-                            </form> -->
+                            </form>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -80,8 +83,9 @@
     </div>
 
     <!-- Pagination -->
-    <div class="mt-3">
-        {{ $foodSales->links() }}
+  <div class="d-flex justify-content-center mt-4">
+        {{ $foodSales->links('pagination::bootstrap-5') }}
     </div>
+
 </div>
 @endsection

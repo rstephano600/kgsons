@@ -4,7 +4,7 @@
 <div class="container">
     <h2>Edit Service</h2>
 
-    <form method="POST" action="{{ route('services.update', $service->id) }}">
+    <form method="POST" action="{{ route('customer_services.update', $service->id) }}">
         @csrf @method('PUT')
 
         <div class="mb-3">
@@ -24,7 +24,7 @@
         </div>
 
         <button type="submit" class="btn btn-success">Update</button>
-        <a href="{{ route('services.index') }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ route('customer_services.index') }}" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
 @endsection

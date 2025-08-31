@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Food;
+use App\Helpers\LogActivity;
 use Illuminate\Http\Request;
 
 class FoodController extends Controller
@@ -43,7 +44,15 @@ class FoodController extends Controller
         $data['is_active'] = $request->boolean('is_active', true);
         $data['stock']     = $data['stock'] ?? 0;
 
-        Food::create($data);
+        $food = Food::create($data);
+
+        LogActivity::add(
+        'create',
+        'Food',
+        $food->id,
+        'created a new Food: ' . $food->name
+    );
+
 
         return redirect()->route('foods.index')->with('success', 'Food item created.');
     }
@@ -73,6 +82,13 @@ class FoodController extends Controller
 
         $food->update($data);
 
+        LogActivity::add(
+        'update',
+        'Food',
+        $food->id,
+        'updated a Food: ' . $food->name
+    );
+
         return redirect()->route('foods.index')->with('success', 'Food item updated.');
     }
 
@@ -92,6 +108,12 @@ class FoodController extends Controller
     public function destroy(Food $food)
     {
         $food->delete();
+    LogActivity::add(
+        'delete',
+        'Food',
+        $food->id,
+        'deleted a Food: ' . $food->name
+    );
 
         return back()->with('success', 'Food item deleted.');
     }

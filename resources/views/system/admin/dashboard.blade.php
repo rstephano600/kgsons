@@ -44,31 +44,7 @@
         <!-- More stat cards would go here in similar col structure -->
     </div>
     
-    <!-- Recent Activity -->
-    <div class="card border-0 shadow-sm mb-4">
-        <div class="card-header bg-white py-3">
-            <h3 class="h5 fw-medium mb-0">Recent Activity</h3>
-        </div>
-        <div class="card-body p-0">
-            <div class="list-group list-group-flush">
-                <!-- Activity items would go here -->
-                <div class="list-group-item border-0 py-3">
-                    <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0">
-                            <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-circle">
-                                <i class="fas fa-tasks"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0 fw-medium">New task assigned</p>
-                            <p class="mb-0 small text-muted">2 hours ago</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- More activity items -->
-            </div>
-        </div>
-    </div>
+
     
     <!-- Quick Actions -->
     <div class="row">
@@ -77,44 +53,163 @@
                 <div class="card-body">
                     <h3 class="h5 fw-medium mb-3">Quick Actions</h3>
                     <div class="row g-3">
-                        <div class="col-6">
-                            <a href="#" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
-                                <i class="fas fa-plus text-primary fs-4 mb-2"></i>
-                                <p class="mb-0 small fw-medium">New Project</p>
-                            </a>
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
-                                <i class="fas fa-file-alt text-primary fs-4 mb-2"></i>
-                                <p class="mb-0 small fw-medium">Reports</p>
-                            </a>
-                        </div>
-                        <!-- More quick actions -->
+
+                    <!-- User Management -->
+                    <div class="col-6">
+                        <a href="{{ route('users.users.index') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-users text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">User Management</p>
+                        </a>
+                    </div>
+
+                    <!-- Add Food Sales -->
+                    <div class="col-6">
+                        <a href="{{ route('food_sales.index') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-cash-register text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Add Food Sales</p>
+                        </a>
+                    </div>
+
+                    <!-- Add Drink Sales -->
+                    <div class="col-6">
+                        <a href="{{ route('drink_sales.index') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-cash-register text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Add Drinks Sales</p>
+                        </a>
+                    </div>
+
+                    <!-- Food Sales Report -->
+                    <div class="col-6">
+                        <a href="{{ route('reports.food_sales') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-receipt text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Food Sales Report</p>
+                        </a>
+                    </div>
+
+                    <!-- Drink Sales Report -->
+                    <div class="col-6">
+                        <a href="{{ route('reports.drink_sales') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-receipt text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Drink Sales Report</p>
+                        </a>
+                    </div>
+
+                    <!-- Customer Servers -->
+                    <div class="col-6">
+                        <a href="{{ route('customer_services.index') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-user-check text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Customer Servers</p>
+                        </a>
+                    </div>
+
+                    <!-- Food Management -->
+                    <div class="col-6">
+                        <a href="{{ route('foods.index') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-utensils text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Food Management</p>
+                        </a>
+                    </div>
+
+                    <!-- Drinks Management -->
+                    <div class="col-6">
+                        <a href="{{ route('drinks.index') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-wine-glass text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Drinks Management</p>
+                        </a>
+                    </div>
+
+                    <!-- User Logs -->
+                    <div class="col-6">
+                        <a href="{{ route('user-logins.index') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-users text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">User Logs</p>
+                        </a>
+                    </div>
+
+                    <!-- System Settings -->
+                    <div class="col-6">
+                        <a href="{{ route('admin.settings') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-cog text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">System Settings</p>
+                        </a>
+                    </div>
+
+                    <!-- Reports -->
+                    <div class="col-6">
+                        <a href="{{ route('admin.reports') }}" class="d-block p-3 border rounded text-center text-decoration-none hover-shadow">
+                            <i class="fas fa-chart-bar text-primary fs-4 mb-2"></i>
+                            <p class="mb-0 small fw-medium">Reports</p>
+                        </a>
+                    </div>
+
                     </div>
                 </div>
             </div>
         </div>
         
-        <!-- Upcoming Deadlines -->
-        <div class="col-12 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
-                    <h3 class="h5 fw-medium mb-3">Upcoming Deadlines</h3>
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="flex-shrink-0">
-                            <div class="bg-danger bg-opacity-10 text-danger p-2 rounded-circle">
-                                <i class="fas fa-exclamation-circle"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                            <p class="mb-0 fw-medium">Quarterly Report</p>
-                            <p class="mb-0 small text-muted">Due in 3 days</p>
-                        </div>
+        <!-- Deadline Reports -->
+<div class="col-12 col-md-6">
+    <div class="card border-0 shadow-sm h-100">
+        <div class="card-body">
+            <h3 class="h5 fw-medium mb-3">Deadline Reports</h3>
+
+            <!-- Deadline Item 1 -->
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0">
+                    <div class="bg-danger bg-opacity-10 text-danger p-2 rounded-circle">
+                        <i class="fas fa-exclamation-circle"></i>
                     </div>
-                    <!-- More deadline items -->
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <p class="mb-0 fw-medium">Quarterly Report</p>
+                    <p class="mb-0 small text-muted">Due in 3 days</p>
                 </div>
             </div>
+
+            <!-- Deadline Item 2 -->
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0">
+                    <div class="bg-warning bg-opacity-10 text-warning p-2 rounded-circle">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <p class="mb-0 fw-medium">Annual Financial Summary</p>
+                    <p class="mb-0 small text-muted">Due in 7 days</p>
+                </div>
+            </div>
+
+            <!-- Deadline Item 3 -->
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-shrink-0">
+                    <div class="bg-info bg-opacity-10 text-info p-2 rounded-circle">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <p class="mb-0 fw-medium">Client Invoice Review</p>
+                    <p class="mb-0 small text-muted">Due tomorrow</p>
+                </div>
+            </div>
+
+            <!-- Deadline Item 4 -->
+            <div class="d-flex align-items-center">
+                <div class="flex-shrink-0">
+                    <div class="bg-secondary bg-opacity-10 text-secondary p-2 rounded-circle">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                    <p class="mb-0 fw-medium">Project Alpha Closure</p>
+                    <p class="mb-0 small text-muted">Due in 10 days</p>
+                </div>
+            </div>
+
         </div>
+    </div>
+</div>
+
+    </div>
     </div>
 @endsection
 
