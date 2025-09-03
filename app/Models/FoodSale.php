@@ -19,6 +19,7 @@ class FoodSale extends Model
         'payment_method',
         'is_paid',
         'paid_at',
+        'serviced_by',
     ];
 
     public function food()
@@ -33,9 +34,10 @@ class FoodSale extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
-    public function service()
+public function servicedBy()
 {
-    return $this->belongsTo(Service::class);
+    return $this->belongsTo(User::class, 'serviced_by');
 }
+
 
 }

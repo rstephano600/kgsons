@@ -30,7 +30,7 @@
                     <th>Quantity</th>
                     <th>Total Price</th>
                     <th>P status</th>
-                    <!-- <th>Sold By</th> -->
+                    <th>Sold By</th>
                     <th>Sale Date</th>
                     <th>Actions</th>
                 </tr>
@@ -56,12 +56,11 @@
     @else
         <span class="badge bg-success">Paid ({{ ucfirst($sale->payment_method) }})</span>
     @endif
-</td>
+    </td>
 
-                        <!-- <td>{{ $sale->user->name ?? 'Cashier' }}</td> -->
+                        <td>{{ $sale->servicedBy->name ?? 'Not Assigned' }}</td>
                         <td>{{ $sale->created_at }}</td>
                         <td>
-
                             <a href="{{ route('food_sales.show', $sale->id) }}" class="btn btn-sm btn-info">View</a>
                             @if(in_array(Auth::user()->role, ['admin','secretary']))
                             <a href="{{ route('food_sales.edit', $sale->id) }}" class="btn btn-sm btn-warning">Edit</a>

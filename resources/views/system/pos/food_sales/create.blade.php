@@ -23,17 +23,18 @@
             <label for="quantity" class="form-label">Quantity</label>
             <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" required>
         </div>
-<div class="mb-3">
-    <label for="service_id" class="form-label">Served By</label>
-    <select name="service_id" id="service_id" class="form-select" required>
+
+        <div class="mb-3">
+        <label for="service_id" class="form-label">Served By</label>
+        <select name="serviced_by" id="serviced_by" class="form-select" required>
         <option value="">-- Select Service Staff --</option>
         @foreach($services as $service)
-            <option value="{{ $service->id }}">
+            <option value="{{ $service->user_id }}">
                 {{ $service->service_name }} - {{ $service->user->name }}
             </option>
         @endforeach
-    </select>
-</div>
+        </select>
+        </div>
 
 
         <button type="submit" class="btn btn-success">Save Sale</button>

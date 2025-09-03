@@ -15,7 +15,7 @@ class FoodSaleController extends Controller
 // app/Http/Controllers/FoodSaleController.php
 public function index(Request $request)
 {
-    $foodSales = \App\Models\FoodSale::with('food')
+    $foodSales = \App\Models\FoodSale::with(['food', 'servicedBy'])
         ->when($request->filled('search'), function ($q) use ($request) {
             $term = $request->input('search');
             $q->whereHas('food', fn($fq) => $fq->where('name', 'like', "%{$term}%"));
@@ -31,6 +31,7 @@ public function index(Request $request)
 }
 
 
+
     public function create()
     {
         $foods = Food::where('is_active', true)->get();
@@ -43,7 +44,7 @@ public function store(Request $request)
     $request->validate([
         'food_id'  => 'required|exists:foods,id',
         'quantity' => 'required|integer|min:1',
-        'service_id' => 'required|exists:customer_services,id',
+        'serviced_by' => 'required|exists:users,id',
     ]);
 
     $food = Food::findOrFail($request->food_id);
@@ -59,7 +60,7 @@ public function store(Request $request)
         'created_by'    => auth()->id(),
         'payment_method'=> $request->payment_method ?? null,
         'is_paid'       => false,
-        'service_id'    => $request->service_id,
+        'serviced_by'    => $request->serviced_by,
     ]);
 
     LogActivity::add(
@@ -73,10 +74,14 @@ public function store(Request $request)
 }
 
 
-    public function show(FoodSale $foodSale)
-    {
-        return view('system.pos.food_sales.show', compact('foodSale'));
-    }
+public function show(FoodSale $foodSale)
+{
+    // Ensure relationships are loaded
+    $foodSale->load(['food', 'servicedBy']);
+
+    return view('system.pos.food_sales.show', compact('foodSale'));
+}
+
 
     public function edit(FoodSale $foodSale)
     {

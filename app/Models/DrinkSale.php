@@ -15,12 +15,12 @@ class DrinkSale extends Model
         'quantity',
         'price',
         'total',
-        'service_id',
         'created_by',
         'updated_by',
         'payment_method',
         'is_paid',
         'paid_at',
+        'serviced_by',
     ];
 
     // Relations
