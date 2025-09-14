@@ -2,17 +2,49 @@
 
 @section('content')
 <div class="container mt-4">
-    <h2 class="mb-4">📊 Sales Report (Food & Drinks)</h2>
+    <h2 class="mb-4">📊 Sales & Expenses Report</h2>
 
-        <!-- Summary Cards -->
+    <!-- Summary Cards -->
     <div class="row mb-4">
         <div class="col-md-2"><div class="card"><div class="card-body text-center">Today<br><strong>{{ number_format($dayTotal,0) }} TZS</strong></div></div></div>
         <div class="col-md-2"><div class="card"><div class="card-body text-center">This Week<br><strong>{{ number_format($weekTotal,0) }} TZS</strong></div></div></div>
         <div class="col-md-2"><div class="card"><div class="card-body text-center">This Month<br><strong>{{ number_format($monthTotal,0) }} TZS</strong></div></div></div>
         <div class="col-md-2"><div class="card"><div class="card-body text-center">This Year<br><strong>{{ number_format($yearTotal,0) }} TZS</strong></div></div></div>
-        <div class="col-md-2"><div class="card bg-success text-white"><div class="card-body text-center">Total<br><strong>{{ number_format($salesTotal,0) }} TZS</strong></div></div></div>
+        <div class="col-md-2"><div class="card bg-success text-white"><div class="card-body text-center">Total Sales<br><strong>{{ number_format($salesTotal,0) }} TZS</strong></div></div></div>
     </div>
-    
+
+    <!-- Profit & Loss Summary -->
+    <div class="card mb-4">
+        <div class="card-header bg-dark text-white">📌 Summary</div>
+        <div class="card-body">
+            <table class="table table-bordered text-center">
+                <thead class="table-secondary">
+                    <tr>
+                        <th>Total Sales</th>
+                        <th>Total Expenses</th>
+                        <th>Profit / Loss</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>{{ number_format($grandTotal, 2) }} TZS</strong></td>
+                        <td><strong class="text-danger">{{ number_format($totalExpenses, 2) }} TZS</strong></td>
+                        <td>
+                            @if($profitOrLoss >= 0)
+                                <strong class="text-success">{{ number_format($profitOrLoss, 2) }} TZS (Profit)</strong>
+                            @else
+                                <strong class="text-danger">{{ number_format($profitOrLoss, 2) }} TZS (Loss)</strong>
+                            @endif
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <a href="" class="btn btn-danger mt-2">
+                📄 Export PDF
+            </a>
+        </div>
+    </div>
+
     <!-- Filters -->
     <form method="GET" action="{{ route('sales.reports.index') }}" class="row g-3 mb-4">
         <div class="col-md-3">
@@ -111,6 +143,43 @@
             {{ $drinkSales->links('pagination::bootstrap-5') }}
         </div>
         <div class="card-footer fw-bold">Total Drink Sales: {{ number_format($totalDrink, 2) }}</div>
+    </div>
+
+    <!-- Expenses Table -->
+    <div class="card mb-4">
+        <div class="card-header bg-danger text-white">💸 Expenses</div>
+        <div class="card-body table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Item</th>
+                        <th>Amount</th>
+                        <th>Payment Method</th>
+                        <th>Note</th>
+                        <th>Date</th>
+                        <th>Added By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($expenses as $expense)
+                        <tr>
+                            <td>{{ $expense->category->name ?? 'N/A' }}</td>
+                            <td>{{ $expense->item_name }}</td>
+                            <td>{{ number_format($expense->amount, 2) }}</td>
+                            <td>{{ ucfirst($expense->payment_method ?? 'N/A') }}</td>
+                            <td>{{ $expense->note ?? '-' }}</td>
+                            <td>{{ $expense->expense_date->format('d M Y') }}</td>
+                            <td>{{ $expense->creator->name ?? 'System' }}</td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="7" class="text-center text-muted">No expenses found.</td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+            {{ $expenses->links('pagination::bootstrap-5') }}
+        </div>
+        <div class="card-footer fw-bold text-danger">Total Expenses: {{ number_format($totalExpenses, 2) }}</div>
     </div>
 
     <!-- Grand Total -->

@@ -160,6 +160,10 @@ Route::get('/summary/reports/sales', [ReportController::class, 'index'])->name('
 // routes/web.php
 Route::get('/reports/sales', [ReportController::class, 'salesReport'])->name('reports.sales');
 Route::post('/reports/sales/print', [ReportController::class, 'printSalesReport'])->name('reports.sales.print');
+Route::get('/sales-reports/export-pdf', [ReportController::class, 'exportPdf'])->name('sales.reports.exportPdf');
+        // routes/web.php
+Route::get('reports/export-pdf', [ReportController::class, 'exportPdf2'])->name('sales.export.pdf');
+Route::get('reports/export-excel', [ReportController::class, 'exportExcel2'])->name('sales.export.excel');
 
 use App\Http\Controllers\pos\ExpenseCategoryController;
 use App\Http\Controllers\pos\ExpenseController;
@@ -179,6 +183,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/Pos/export/pdf', [ReportsController::class, 'exportPdf'])->name('export.pdf');
         Route::get('/pos/export/excel', [ReportsController::class, 'exportExcel'])->name('export.excel');
         Route::get('/pos/export/csv', [ReportsController::class, 'exportCsv'])->name('export.csv');
+
+
     });
     
 });

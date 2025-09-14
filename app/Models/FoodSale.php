@@ -34,6 +34,10 @@ class FoodSale extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+public function service()
+{
+    return $this->belongsTo(User::class, 'serviced_by');
+}
 public function servicedBy()
 {
     return $this->belongsTo(User::class, 'serviced_by');
