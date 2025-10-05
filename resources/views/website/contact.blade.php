@@ -162,7 +162,7 @@
                             </div>
                             <div>
                                 <h5 class="fw-bold mb-1">Head Office</h5>
-                                <p class="mb-0">Kigoma, Tanzania</p>
+                                <p class="mb-0">Arusha, Tanzania</p>
                                 <small class="text-muted">Serving clients nationwide</small>
                             </div>
                         </div>
@@ -320,7 +320,7 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4 text-center">
                         <i class="fas fa-map-marker-alt text-primary fa-2x mb-3"></i>
-                        <h5 class="fw-bold mb-3">Kigoma Region</h5>
+                        <h5 class="fw-bold mb-3">Arusha Region</h5>
                         <p class="text-muted">Our main operational hub with full service coverage</p>
                     </div>
                 </div>
@@ -330,7 +330,7 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body p-4 text-center">
                         <i class="fas fa-building text-primary fa-2x mb-3"></i>
-                        <h5 class="fw-bold mb-3">Dodoma & Central</h5>
+                        <h5 class="fw-bold mb-3">Kigoma</h5>
                         <p class="text-muted">Government and institutional projects</p>
                     </div>
                 </div>

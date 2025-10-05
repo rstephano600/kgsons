@@ -39,7 +39,7 @@
                      class="rounded-circle me-2" 
                      style="width: 40px; height: 40px; object-fit: cover;">
                 <span class="fw-bold text-primary">KGSONS</span>
-                <span class="text-dark">Company Ltd</span>
+                <span class="text-dark" style="margin-right:10px;">Company Ltd</span>
             </a>
 
             <!-- Mobile Toggle Button -->
@@ -107,6 +107,11 @@
                     <li class="nav-item ms-lg-3">
                         <a class="btn btn-primary px-3" href="{{ route('contact') }}">
                             <i class="fas fa-envelope me-1"></i> Request Quote
+                        </a>
+                    </li>
+                    <li class="nav-item ms-lg-3">
+                        <a class="btn btn-primary px-3" href="{{ route('login') }}">
+                            <i class="fas fa-sign-in me-1"></i> Login
                         </a>
                     </li>
                 </ul>
@@ -201,6 +206,11 @@
                         <i class="fas fa-envelope me-2"></i> Request Quote
                     </a>
                 </li>
+                <li class="nav-item mt-4">
+                    <a class="btn btn-primary w-100" href="{{ route('login') }}">
+                        <i class="fas fa-sign-in me-2"></i> Login
+                    </a>
+                </li>
             </ul>
             
             <div class="mt-4 pt-3 border-top">
@@ -216,7 +226,7 @@
                     </li>
                     <li class="mb-2">
                         <i class="fas fa-map-marker-alt text-primary me-2"></i>
-                        Takwimu house kigoma
+                        Tanzania
                     </li>
                 </ul>
             </div>
